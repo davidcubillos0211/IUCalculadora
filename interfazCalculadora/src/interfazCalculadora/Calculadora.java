@@ -55,7 +55,7 @@ public class Calculadora implements ICalculadora{
 		int i=2, j=1;
 		
 		if (n>=14 ||n <0) {
-			throw new ArithmeticException ("el factorial no se puede calcular con un int: overflow"); 
+			throw new ArithmeticException ("int overflow"); 
 
 		}else {
 		while (i<=n) {
