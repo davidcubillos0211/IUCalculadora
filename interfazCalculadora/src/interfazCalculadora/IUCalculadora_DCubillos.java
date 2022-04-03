@@ -146,7 +146,7 @@ public class IUCalculadora_DCubillos {
 		
 		if (lolo!=0) {
 			
-			dev= "ans "+lolo;
+			dev=""+lolo;
 		}
 		if (dev.length()>0)textField.setText(dev);
 	
