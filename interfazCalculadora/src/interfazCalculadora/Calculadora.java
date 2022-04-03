@@ -28,9 +28,12 @@ public class Calculadora implements ICalculadora{
 		// raiz por raiz llegaria al maximo resultadao
 		if (Math.sqrt(Double.MAX_VALUE)<= Math.sqrt(Math.abs(a))*Math.sqrt(Math.abs(b))) {
 			throw new ArithmeticException ("los valores no puden multiplicarse "); 
-
+			
 		}
-		double res= a*b;	
+		double res= a*b;
+		if (a==0.0 ) {
+			return a ;
+		}
 		return res;
 	}
 	

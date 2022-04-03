@@ -4,16 +4,20 @@ import java.awt.EventQueue;
 import javax.swing.JFrame;
 import javax.swing.JToolBar;
 import javax.swing.JTextField;
+import javax.imageio.plugins.tiff.ExifParentTIFFTagSet;
 import javax.swing.JButton;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 import java.awt.Color;
 import java.awt.Font;
 import javax.swing.SwingConstants;
+import javax.swing.JProgressBar;
+import javax.swing.JRadioButton;
 
 public class IUCalculadora_DCubillos {
 
 	private JFrame frame;
+	
 	private JTextField textField;
 	boolean suma= false , 
 			resta = false, 
@@ -21,8 +25,11 @@ public class IUCalculadora_DCubillos {
 			erase= false,
 			multiplicacion = false;
 	
-	Calculadora calc = new Calculadora ();
-	double primero , segundo ; 
+	
+	Calculadora calc = new Calculadora (); 
+	
+	double primero , segundo , resultmultilplic=-1; 
+	
 	public void setFalse () {
 		
 				suma= false ; 
@@ -33,8 +40,50 @@ public class IUCalculadora_DCubillos {
 	}
 	
 	public boolean libre () {// dice si la calculadora tiene ya una operacion pendiente
-		return !(suma || resta || division || multiplicacion) ;
-}
+		return !(suma || resta || division || multiplicacion) ;//si hay uno activo, dara que no esta libre (false)
+	}
+	public void borrando() {
+		if (erase) { textField.setText(null);
+		 erase= false;}
+	}
+	
+	public String devuelveSinDec(String cadena) {
+		// vamos a comprobar que el numero tiene al final de su cadena ".00000[..]000"
+		
+		
+		String gettext=textField.getText(),
+				muchotexto="", 
+				auxuiliar="",
+				dev="";
+		
+		
+		if (gettext.indexOf(".")!=-1) {
+			muchotexto=gettext.substring(gettext.indexOf("."));
+			
+		} 
+		
+		
+		for (int j = 0 ; j<muchotexto.length();j+=1 ) {
+			auxuiliar+="0";
+		}
+		
+		
+		boolean condicionBooll= true
+				, condiciona= gettext.charAt(gettext.length()-1)== (".".charAt(0))
+				// que temga en la ultima posicion el punto
+				,condicinob=   muchotexto ==auxuiliar;
+				// que tenga puento y
+		if (condiciona&& gettext.length()>1) {
+			// DEVEULEVE 
+			
+		} if (condicinob &&   gettext.length()>1) {
+			
+			dev= gettext.substring(0, (gettext.length()-muchotexto.length()-2) );
+
+		}
+		return dev;
+				
+	}
 	/**
 	 * Launch the application.
 	 */
@@ -57,6 +106,7 @@ public class IUCalculadora_DCubillos {
 	public IUCalculadora_DCubillos() {
 		initialize();
 	}
+	
 	private void funcionOperar() {
 		
 		try {
@@ -74,7 +124,11 @@ public class IUCalculadora_DCubillos {
 				
 			}if (multiplicacion) {
 				lolo=calc.mult(primero, segundo);
-
+				if (resultmultilplic==0) {
+					lolo=0;
+					resultmultilplic=-1;
+				}
+				
 				
 			}if (resta) {
 				lolo=calc.resta(primero, segundo);
@@ -89,27 +143,33 @@ public class IUCalculadora_DCubillos {
 			erase = true ; 
 		}
 		setFalse();
+		
 		if (lolo!=0) {
 			
-			dev= ""+lolo;
+			dev= "ans "+lolo;
 		}
 		if (dev.length()>0)textField.setText(dev);
 	
-		;
+		
 		
 	}
+
+	
 
 	/**
 	 * Initialize the contents of the frame.
 	 */
 	private void initialize() {
+				//frame.getContentPane().add(progressBar);
+		
+		
 		
 		
 		
 		frame = new JFrame();
 		frame.getContentPane().setBackground(Color.DARK_GRAY);
 		frame.getContentPane().setForeground(Color.ORANGE);
-		frame.setBounds(100, 100, 307, 507);
+		frame.setBounds(100, 100, 372, 507);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frame.getContentPane().setLayout(null);
 		
@@ -117,7 +177,7 @@ public class IUCalculadora_DCubillos {
 		textField.setFont(new Font("Comic Sans MS", Font.PLAIN, 20));
 		textField.setForeground(new Color(230, 230, 250));
 		textField.setHorizontalAlignment(SwingConstants.RIGHT);
-		textField.setBounds(26, 6, 264, 73);
+		textField.setBounds(6, 6, 360, 73);
 		textField.setBackground(new Color(119, 136, 153));
 		frame.getContentPane().add(textField);
 		textField.setColumns(10);
@@ -128,15 +188,38 @@ public class IUCalculadora_DCubillos {
 		frame.getContentPane().add(btnNewButton);
 		btnNewButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
+				borrando();
 				String numero = textField.getText()+ btnNewButton.getText();
-				if (erase) { textField.setText(null);
-							 erase= false;}
+				
 				textField.setText(numero);
 				}
 			
 			});
 	
+		JRadioButton sumabttn = new JRadioButton("Suma");
+		sumabttn.setFont(new Font("Helvetica Neue", Font.PLAIN, 13));
+		sumabttn.setForeground(new Color(255, 255, 255));
+		sumabttn.setBounds(292, 102, 112, 23);
+		frame.getContentPane().add(sumabttn);
 		
+	
+		JRadioButton restabttn = new JRadioButton("Resta ");
+		restabttn.setFont(new Font("Helvetica Neue", Font.PLAIN, 13));
+		restabttn.setForeground(new Color(255, 255, 255));
+		restabttn.setBounds(292, 163, 141, 23);
+		frame.getContentPane().add(restabttn);
+		
+		JRadioButton multiplicacionbttn = new JRadioButton("Mult");
+		multiplicacionbttn.setFont(new Font("Helvetica Neue", Font.PLAIN, 13));
+		multiplicacionbttn.setForeground(new Color(255, 255, 255));
+		multiplicacionbttn.setBounds(290, 224, 141, 23);
+		frame.getContentPane().add(multiplicacionbttn);
+		
+		JRadioButton divisionbttn = new JRadioButton("Div");
+		divisionbttn.setFont(new Font("Helvetica Neue", Font.PLAIN, 13));
+		divisionbttn.setForeground(new Color(255, 255, 255));
+		divisionbttn.setBounds(290, 285, 141, 23);
+		frame.getContentPane().add(divisionbttn);
 		
 		JButton btnNewButton_1 = new JButton("8");
 		btnNewButton_1.setBackground(new Color(105, 105, 105));
@@ -144,11 +227,12 @@ public class IUCalculadora_DCubillos {
 		frame.getContentPane().add(btnNewButton_1);
 		btnNewButton_1.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				if (erase) { textField.setText(null);
-				 erase= false;}
+				borrando();
+
 				String numero = textField.getText()+ btnNewButton_1.getText();
 				textField.setText(numero);}
 			});
+		
 		
 		JButton btnNewButton_2 = new JButton("9");
 		btnNewButton_2.setBackground(new Color(105, 105, 105));
@@ -156,8 +240,8 @@ public class IUCalculadora_DCubillos {
 		frame.getContentPane().add(btnNewButton_2);
 		btnNewButton_2.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				if (erase) { textField.setText(null);
-				 erase= false;}
+				borrando();
+
 				String numero = textField.getText()+ btnNewButton_2.getText();
 				textField.setText(numero);}
 			});
@@ -168,8 +252,8 @@ public class IUCalculadora_DCubillos {
 		frame.getContentPane().add(btnNewButton_3);
 		btnNewButton_3.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				if (erase) { textField.setText(null);
-				 erase= false;}
+				borrando();
+
 				String numero = textField.getText()+ btnNewButton_3.getText();
 				textField.setText(numero);}
 			});
@@ -180,8 +264,8 @@ public class IUCalculadora_DCubillos {
 		frame.getContentPane().add(btnNewButton_4);
 		btnNewButton_4.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				if (erase) { textField.setText(null);
-				 erase= false;}
+				borrando();
+
 				String numero = textField.getText()+ btnNewButton_4.getText();
 				textField.setText(numero);}
 			});
@@ -192,8 +276,8 @@ public class IUCalculadora_DCubillos {
 		frame.getContentPane().add(btnNewButton_5);
 		btnNewButton_5.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				if (erase) { textField.setText(null);
-				 erase= false;}
+				borrando();
+
 				String numero = textField.getText()+ btnNewButton_5.getText();
 				textField.setText(numero);}
 			});
@@ -204,8 +288,8 @@ public class IUCalculadora_DCubillos {
 		frame.getContentPane().add(btnNewButton_6);
 		btnNewButton_6.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				if (erase) { textField.setText(null);
-				 erase= false;}
+				borrando();
+
 				String numero = textField.getText()+ btnNewButton_6.getText();
 				textField.setText(numero);}
 			});
@@ -216,8 +300,8 @@ public class IUCalculadora_DCubillos {
 		frame.getContentPane().add(btnNewButton_7);
 		btnNewButton_7.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				if (erase) { textField.setText(null);
-				 erase= false;}
+				borrando();
+
 				String numero = textField.getText()+ btnNewButton_7.getText();
 				textField.setText(numero);}
 			});
@@ -228,8 +312,8 @@ public class IUCalculadora_DCubillos {
 		frame.getContentPane().add(btnNewButton_8);
 		btnNewButton_8.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				if (erase) { textField.setText(null);
-				 erase= false;}
+				borrando();
+
 				String numero = textField.getText()+ btnNewButton_8.getText();
 				textField.setText(numero);}
 			});
@@ -241,8 +325,8 @@ public class IUCalculadora_DCubillos {
 		frame.getContentPane().add(btnNewButton_6_1);
 		btnNewButton_6_1.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				if (erase) { textField.setText(null);
-				 erase= false;}
+				borrando();
+
 				// no se puede pulsar mas de una vez sin un action listener activado entre medias
 				String numero = textField.getText();
 				if (!numero.contains(".")){
@@ -259,8 +343,8 @@ public class IUCalculadora_DCubillos {
 		frame.getContentPane().add(btnNewButton_7_1);
 		btnNewButton_7_1.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				if (erase) { textField.setText(null);
-				 erase= false;}
+				borrando();
+
 				String numero = textField.getText()+ btnNewButton_7_1.getText();
 				textField.setText(numero);}
 			});
@@ -272,21 +356,30 @@ public class IUCalculadora_DCubillos {
 		frame.getContentPane().add(btnNewButton_8_1);
 		btnNewButton_8_1.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-			
+			if (!libre()&& !textField.getText().isEmpty()){
 				funcionOperar();
+				
+				sumabttn.setSelected(suma);
+				restabttn.setSelected(resta);
+				multiplicacionbttn.setSelected(multiplicacion);
+				divisionbttn.setSelected(division);
+				
+			}
 	}
 			});
 		
 		
 		
 		JButton btnNewButton_12 = new JButton("←");
+		btnNewButton_12.setFont(new Font("Lucida Grande", Font.PLAIN, 15));
+		btnNewButton_12.setForeground(new Color(139, 0, 0));
 		btnNewButton_12.setBackground(new Color(0, 0, 0));
 		btnNewButton_12.setBounds(26, 91, 53, 49);
 		frame.getContentPane().add(btnNewButton_12);
 		btnNewButton_12.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				if (erase) { textField.setText(null);
-				 erase= false;}
+				borrando();
+
 				 int largo = textField.getText().length()-1;
 		if (largo>=0 ){
 			
@@ -297,7 +390,7 @@ public class IUCalculadora_DCubillos {
 			});
 		
 		JButton btnNewButton_1_1 = new JButton("C");
-		btnNewButton_1_1.setBackground(new Color(105, 105, 105));
+		btnNewButton_1_1.setBackground(new Color(0, 128, 128));
 		btnNewButton_1_1.setBounds(95, 91, 53, 49);
 		frame.getContentPane().add(btnNewButton_1_1);
 		btnNewButton_1_1.addActionListener(new ActionListener() {
@@ -313,8 +406,8 @@ public class IUCalculadora_DCubillos {
 		frame.getContentPane().add(btnNewButton_2_1);
 		btnNewButton_2_1.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				if (erase) { textField.setText(null);
-				 erase= false;}
+				borrando();
+
 				String numero = textField.getText()+ btnNewButton_2_1.getText();
 				textField.setText(numero);}
 			});
@@ -336,6 +429,7 @@ public class IUCalculadora_DCubillos {
 				
 				if (libre()&& condicionBooll ) {
 					suma=true;
+					sumabttn.setSelected(suma);
 					primero= Double.parseDouble(textField.getText());
 					
 					textField.setText(null);
@@ -406,8 +500,8 @@ public class IUCalculadora_DCubillos {
 				
 				if (libre()&& condicionBooll ) {
 					resta=true;
+					restabttn.setSelected(resta);
 					primero= Double.parseDouble(textField.getText());
-					
 					textField.setText(null);
 				};}
 				
@@ -432,7 +526,13 @@ public class IUCalculadora_DCubillos {
 				
 				if (libre() && condicionBooll ) {
 					multiplicacion=true;
+					multiplicacionbttn.setSelected(multiplicacion)  ;
 					primero= Double.parseDouble(textField.getText());
+					if (primero==0) {
+						primero = 0 ; 
+						resultmultilplic=0;
+					}
+					
 					
 					textField.setText(null);
 
@@ -457,8 +557,8 @@ public class IUCalculadora_DCubillos {
 				
 				if (libre()&& condicionBooll ) {
 					division=true;
+					divisionbttn.setSelected(division);
 					primero= Double.parseDouble(textField.getText());
-					
 					textField.setText(null);
 				};}
 			});
@@ -468,29 +568,87 @@ public class IUCalculadora_DCubillos {
 		btnNewButton_8_2.setBackground(new Color(105, 105, 105));
 		btnNewButton_8_2.setBounds(160, 335, 53, 49);
 		frame.getContentPane().add(btnNewButton_8_2);
+		
+		
+
+		
 		btnNewButton_8_2.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
+					
+					
+				if (libre()&& !textField.getText().isEmpty()) {
+					funcionOperar();
+					sumabttn.setSelected(suma);
+					restabttn.setSelected(resta);
+					multiplicacionbttn.setSelected(multiplicacion);
+					divisionbttn.setSelected(division);
+					
+				String gettext=textField.getText(),
+						
+						part1="" , 
+						part2="";
+				boolean condicionBooll= true //condiciones que permiten el curse de esprimo()
+						, condiciona=false
+						// que ytemga en la ultima posicion el punto- para ello deben haber al menos dos caracteres. (length mayor que uno)
+						,condicinob=false; 
+						// que sean todo ceros  en la parte decimas
+				if (gettext.length()>1) {// par
+					condiciona=gettext.charAt(gettext.length()-1)== '.';
+				}
 				
-
-				boolean condicionBooll= true; 
+				
+				// hacer un paerse a doouble y si es igual a su redondeo usalo 
+				
+				
+				Double doble = Double.parseDouble(textField.getText());
+				// parsea a souble 
+				
+				int entero= (int) Math.round(doble);
+				
+				// ropun 
+				if (entero==doble) {
+					// entonces  si son iguales continuamos 
+					
+					//else, el numero no nos vale 
+					// en tal caso sigue para alante con el p
+				
+					condicinob=true;
+					if (gettext.contains(".")) {
+					part1= gettext.substring(0,gettext.indexOf("."));
+					}else {
+						part1= gettext;
+					}
+				}
+				// comparacion 
 				try {
-					Integer.parseInt(textField.getText());
+						Integer.parseInt(part1);
+						
 					
 				}catch (NumberFormatException exc) {
 					condicionBooll= false;
-					
 					textField.setText("no se puede convertir a entero");
 				}
-				
-				if (libre() && condicionBooll ) {
-					boolean esprimo	=calc.esPrimo(Integer.parseInt(textField.getText()));
+				boolean esprimo;
+				if (libre() && condicionBooll &&  condicinob) {// la parte decimal es cero (part2)
+					
+					
+						 esprimo=calc.esPrimo(Integer.parseInt(part1));
+					
 					if (esprimo) {textField.setText("Es primo");}
 					else {textField.setText("No es primo");}
-					;
-}
+					
+				}
 				erase= true;
 					}
+			
+			}
+			
+		}
 				
-			});
-	}
+			);
+		
+		
+	
+	
+}
 }
