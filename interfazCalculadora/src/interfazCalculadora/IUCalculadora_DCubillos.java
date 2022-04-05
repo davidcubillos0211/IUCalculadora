@@ -197,6 +197,7 @@ public class IUCalculadora_DCubillos {
 			});
 	
 		JRadioButton sumabttn = new JRadioButton("Suma");
+		sumabttn.setBackground(Color.DARK_GRAY);
 		sumabttn.setFont(new Font("Helvetica Neue", Font.PLAIN, 13));
 		sumabttn.setForeground(new Color(255, 255, 255));
 		sumabttn.setBounds(292, 102, 112, 23);
@@ -204,18 +205,21 @@ public class IUCalculadora_DCubillos {
 		
 	
 		JRadioButton restabttn = new JRadioButton("Resta ");
+		restabttn.setBackground(Color.DARK_GRAY);
 		restabttn.setFont(new Font("Helvetica Neue", Font.PLAIN, 13));
 		restabttn.setForeground(new Color(255, 255, 255));
 		restabttn.setBounds(292, 163, 141, 23);
 		frame.getContentPane().add(restabttn);
 		
 		JRadioButton multiplicacionbttn = new JRadioButton("Mult");
+		multiplicacionbttn.setBackground(Color.DARK_GRAY);
 		multiplicacionbttn.setFont(new Font("Helvetica Neue", Font.PLAIN, 13));
 		multiplicacionbttn.setForeground(new Color(255, 255, 255));
 		multiplicacionbttn.setBounds(290, 224, 141, 23);
 		frame.getContentPane().add(multiplicacionbttn);
 		
 		JRadioButton divisionbttn = new JRadioButton("Div");
+		divisionbttn.setBackground(Color.DARK_GRAY);
 		divisionbttn.setFont(new Font("Helvetica Neue", Font.PLAIN, 13));
 		divisionbttn.setForeground(new Color(255, 255, 255));
 		divisionbttn.setBounds(290, 285, 141, 23);
@@ -419,6 +423,7 @@ public class IUCalculadora_DCubillos {
 		btnNewButton_9_1.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				boolean condicionBooll= true; 
+				funcionOperar();
 				try {
 					Double.parseDouble(textField.getText());
 					
@@ -480,6 +485,7 @@ public class IUCalculadora_DCubillos {
 				textField.setText("-");
 			}
 				else {
+					funcionOperar();
 			
 				boolean condicionBooll= true; 
 				if (textField.getText()==null) {
@@ -516,6 +522,7 @@ public class IUCalculadora_DCubillos {
 		btnNewButton_10.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				boolean condicionBooll= true; 
+				funcionOperar();
 				try {
 					Double.parseDouble(textField.getText());
 					
@@ -547,6 +554,7 @@ public class IUCalculadora_DCubillos {
 		btnNewButton_11.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				boolean condicionBooll= true; 
+				funcionOperar();
 				try {
 					Double.parseDouble(textField.getText());
 					
