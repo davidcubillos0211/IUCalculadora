@@ -377,7 +377,7 @@ public class IUCalculadora_DCubillos {
 		JButton btnNewButton_12 = new JButton("←");
 		btnNewButton_12.setFont(new Font("Lucida Grande", Font.PLAIN, 15));
 		btnNewButton_12.setForeground(new Color(139, 0, 0));
-		btnNewButton_12.setBackground(new Color(0, 0, 0));
+		btnNewButton_12.setBackground(Color.GRAY);
 		btnNewButton_12.setBounds(26, 91, 53, 49);
 		frame.getContentPane().add(btnNewButton_12);
 		btnNewButton_12.addActionListener(new ActionListener() {
@@ -394,7 +394,7 @@ public class IUCalculadora_DCubillos {
 			});
 		
 		JButton btnNewButton_1_1 = new JButton("C");
-		btnNewButton_1_1.setBackground(new Color(0, 128, 128));
+		btnNewButton_1_1.setBackground(Color.GRAY);
 		btnNewButton_1_1.setBounds(95, 91, 53, 49);
 		frame.getContentPane().add(btnNewButton_1_1);
 		btnNewButton_1_1.addActionListener(new ActionListener() {
@@ -442,6 +442,7 @@ public class IUCalculadora_DCubillos {
 				;}
 			});
 		JButton btnNewButton_11_1 = new JButton("Fact");
+		btnNewButton_11_1.setFont(new Font("Lucida Grande", Font.PLAIN, 11));
 		btnNewButton_11_1.setBackground(new Color(105, 105, 105));
 		btnNewButton_11_1.setBounds(225, 335, 53, 49);
 		frame.getContentPane().add(btnNewButton_11_1);
@@ -449,12 +450,23 @@ public class IUCalculadora_DCubillos {
 			public void actionPerformed(ActionEvent e) { 
 				funcionOperar();
 				boolean condicionBooll= true; 
+				double doble= 0.1;
+				
 				try {
-					Double.parseDouble(textField.getText());
+					doble=Double.parseDouble(textField.getText());
 					
 				}catch (NumberFormatException exc) {
 					condicionBooll= false;
 					
+					
+					
+				}
+				
+				if(doble!=Math.round(doble)) {// no es entero
+					// si no es entero, no se opera
+					textField.setText("El numero debe ser entero");
+					condicionBooll=false;
+					erase=true;
 				}
 				
 				if (libre() && condicionBooll ) {
@@ -573,6 +585,7 @@ public class IUCalculadora_DCubillos {
 		
 
 		JButton btnNewButton_8_2 = new JButton("primo");
+		btnNewButton_8_2.setFont(new Font("Lucida Grande", Font.PLAIN, 10));
 		btnNewButton_8_2.setBackground(new Color(105, 105, 105));
 		btnNewButton_8_2.setBounds(160, 335, 53, 49);
 		frame.getContentPane().add(btnNewButton_8_2);
